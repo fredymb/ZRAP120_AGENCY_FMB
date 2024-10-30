@@ -1,0 +1,56 @@
+managed implementation in class ZBP_R_AGENCYFMB unique;
+strict ( 2 );
+with draft;
+define behavior for ZR_AGENCYFMB alias Agency
+persistent table zagencyfmb
+draft table zagencyfmb_d
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master ( global )
+with additional save with full data
+
+{
+  field ( readonly )
+  Uuid,
+  LocalCreatedBy,
+  LocalCreatedAt,
+  LocalLastChangedBy,
+  LocalLastChangedAt,
+  LastChangedAt;
+
+  field ( numbering : managed )
+  Uuid;
+
+
+  create;
+  update;
+  delete;
+
+  //event(s)
+  event entity_created parameter ZA_Agency_FMB;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zagencyfmb
+    {
+      Uuid               = uuid;
+      AgencyId           = agency_id;
+      AgencyName         = agency_name;
+      Street             = street;
+      PostalCode         = postal_code;
+      City               = city;
+      CountryCode        = country_code;
+      PhoneNumber        = phone_number;
+      EmailAddress       = email_address;
+      WebAddress         = web_address;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+    }
+}
